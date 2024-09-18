@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "88308145709",
+    "project_id": "gb-insta-mart",
+    "storage_bucket": "gb-insta-mart.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88308145709:android:dd9bd1de99d0170d49a2a4",
+        "android_client_info": {
+          "package_name": "in.gbinstamart.customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "88308145709-omcc8pdnp5i75qgb8sq9mhgfh1le24k6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.gbinstamart.customer",
+            "certificate_hash": "6a8866dccabc2e33880262a47ccb120ab84bcb86"
+          }
+        },
+        {
+          "client_id": "88308145709-pphjf083c994b6kdbb2j1hueims8ejte.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.gbinstamart.customer",
+            "certificate_hash": "0244d1e9300ae5d5fb45cffb438f9fd013da87f1"
+          }
+        },
+        {
+          "client_id": "88308145709-625fkidbdafs31ag7gn004pc0skc8olk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgbN2sXAVbavF0NlhLjPrdw1-rXGjF99Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88308145709-625fkidbdafs31ag7gn004pc0skc8olk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "88308145709-c1qk207loq8blcal9vdfsn3oveq6mnqk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.wrteam.eshop"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88308145709:android:b08d294cd0c49b3d49a2a4",
+        "android_client_info": {
+          "package_name": "in.gbinstamart.deliveryboy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "88308145709-c12b71irb6blqrlg0p1ocgq1s5eodkd9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.gbinstamart.deliveryboy",
+            "certificate_hash": "0244d1e9300ae5d5fb45cffb438f9fd013da87f1"
+          }
+        },
+        {
+          "client_id": "88308145709-625fkidbdafs31ag7gn004pc0skc8olk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgbN2sXAVbavF0NlhLjPrdw1-rXGjF99Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88308145709-625fkidbdafs31ag7gn004pc0skc8olk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "88308145709-c1qk207loq8blcal9vdfsn3oveq6mnqk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.wrteam.eshop"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
