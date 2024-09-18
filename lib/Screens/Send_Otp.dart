@@ -1,15 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
+import '../Helper/ApiBaseHelper.dart';
 import '../Helper/AppBtn.dart';
 import '../Helper/Color.dart';
 import '../Helper/Constant.dart';
@@ -27,6 +30,9 @@ class SendOtp extends StatefulWidget {
   _SendOtpState createState() => _SendOtpState();
 }
 
+String mobileNumber = "";
+String receivedOtp = "";
+
 class _SendOtpState extends State<SendOtp> with TickerProviderStateMixin {
   bool visible = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -38,9 +44,99 @@ class _SendOtpState extends State<SendOtp> with TickerProviderStateMixin {
   Animation? buttonSqueezeanimation;
   AnimationController? buttonController;
 
+  ApiBaseHelper apiBaseHelper = ApiBaseHelper();
+
+  Future<void> getVerifyUserOTP() async {
+    try {
+      var data = {
+        "project_name": "gb_insta_mart_delivery_boy",
+        MOBILE: mobile,
+        "is_forgot_password": (widget.title == getTranslated(context, 'FORGOT_PASS_TITLE') ? 1 : 0).toString()
+      };
+
+      apiBaseHelper.postAPICall(sendOtpAndVerifyApi, data).then((getdata) async {
+        mobileNumber = mobile ?? "";
+        bool? error = getdata["error"];
+        String? msg = "OTP send successfully";
+        receivedOtp = getdata["otp"].toString();
+        await buttonController!.reverse();
+        Navigator.pushReplacement(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => VerifyOtp(
+              mobileNumber: mobile!,
+              countryCode: countrycode,
+              title: FORGOT_PASS_TITLE,
+              receivedOtp: receivedOtp,
+            ),
+          ),
+        );
+
+        // SettingProvider settingsProvider = Provider.of<SettingProvider>(context, listen: false);
+
+        if (widget.title == getTranslated(context, 'SEND_OTP_TITLE')) {
+          log(error.toString(), name: "error.toString()");
+          if (!error!) {
+            Fluttertoast.showToast(msg: msg!);
+
+            // setSnackbar(msg!, context);
+
+            Future.delayed(const Duration(seconds: 1)).then((_) {
+              Navigator.pushReplacement(
+                context,
+                CupertinoPageRoute(
+                  builder: (context) => VerifyOtp(
+                    mobileNumber: mobile!,
+                    countryCode: countrycode,
+                    title: FORGOT_PASS_TITLE,
+                  ),
+                ),
+              );
+            });
+          } else {
+            Fluttertoast.showToast(msg: msg!);
+
+            // setSnackbar(msg!, context);
+          }
+        }
+        if (widget.title == getTranslated(context, 'FORGOT_PASS_TITLE')) {
+          if (!error!) {
+            Navigator.pushReplacement(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => VerifyOtp(
+                  mobileNumber: mobile!,
+                  countryCode: countrycode,
+                  title: FORGOT_PASS_TITLE,
+                  receivedOtp: receivedOtp,
+                ),
+              ),
+            );
+          } else {
+            Fluttertoast.showToast(msg: getTranslated(context, 'FIRSTSIGNUP_MSG')!);
+
+            // setSnackbar(getTranslated(context, 'FIRSTSIGNUP_MSG')!, context);
+          }
+        }
+      }, onError: (error) {
+        Fluttertoast.showToast(msg: error.toString());
+
+        // setSnackbar(error.toString(), context);
+      });
+    } on TimeoutException catch (_) {
+      Fluttertoast.showToast(msg: getTranslated(context, 'somethingMSg')!);
+
+      // setSnackbar(getTranslated(context, 'somethingMSg')!, context);
+      await buttonController!.reverse();
+    }
+
+    return;
+  }
+
   void validateAndSubmit() async {
     if (validateAndSave()) {
       _playAnimation();
+      print("Sdvbcvnhgasdcxced");
       checkNetwork();
     }
   }
@@ -54,7 +150,9 @@ class _SendOtpState extends State<SendOtp> with TickerProviderStateMixin {
   Future<void> checkNetwork() async {
     bool avail = await isNetworkAvailable();
     if (avail) {
-      getVerifyUser();
+      print("csvcnhgmvb xcvz");
+      await getVerifyUserOTP();
+      // getVerifyUser();
     } else {
       Future.delayed(const Duration(seconds: 2)).then(
         (_) async {
@@ -146,14 +244,9 @@ class _SendOtpState extends State<SendOtp> with TickerProviderStateMixin {
 
   Future<void> getVerifyUser() async {
     try {
-      var data = {
-        MOBILE: mobile,
-        "is_forgot_password":
-            (widget.title == FORGOT_PASS_TITLE ? 1 : 0).toString()
-      };
+      var data = {MOBILE: mobile, "is_forgot_password": (widget.title == FORGOT_PASS_TITLE ? 1 : 0).toString()};
       print("sending otp to ${data} ");
-      Response response =
-          await post(getVerifyUserApi, body: data, headers: headers).timeout(
+      Response response = await post(getVerifyUserApi, body: data, headers: headers).timeout(
         const Duration(
           seconds: timeOut,
         ),
@@ -235,9 +328,7 @@ class _SendOtpState extends State<SendOtp> with TickerProviderStateMixin {
       child: Align(
         alignment: Alignment.center,
         child: Text(
-          widget.title == SEND_OTP_TITLE
-              ? getTranslated(context, CREATE_ACC_LBL)!
-              : getTranslated(context, FORGOT_PASSWORDTITILE)!,
+          widget.title == SEND_OTP_TITLE ? getTranslated(context, CREATE_ACC_LBL)! : getTranslated(context, FORGOT_PASSWORDTITILE)!,
           style: Theme.of(context).textTheme.titleMedium!.copyWith(
                 color: Theme.of(context).colorScheme.fontColor,
                 fontWeight: FontWeight.bold,
@@ -273,47 +364,39 @@ class _SendOtpState extends State<SendOtp> with TickerProviderStateMixin {
     return Padding(
       padding: const EdgeInsetsDirectional.only(start: 15, end: 15),
       child: IntlPhoneField(
-        style: Theme.of(context).textTheme.titleSmall!.copyWith(
-            color: Theme.of(context).colorScheme.fontColor,
-            fontWeight: FontWeight.normal),
+        style: Theme.of(context).textTheme.titleSmall!.copyWith(color: Theme.of(context).colorScheme.fontColor, fontWeight: FontWeight.normal),
         controller: mobileController,
         decoration: InputDecoration(
-          hintStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
-              color: Theme.of(context).colorScheme.fontColor,
-              fontWeight: FontWeight.normal),
+          hintStyle: Theme.of(context).textTheme.titleSmall!.copyWith(color: Theme.of(context).colorScheme.fontColor, fontWeight: FontWeight.normal),
           hintText: getTranslated(context, MOBILEHINT_LBL)!,
-          border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(10)),
+          border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(10)),
           fillColor: Theme.of(context).colorScheme.lightWhite,
           filled: true,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
         ),
         initialCountryCode: defaultCountryCode,
         onTap: () {},
         onSaved: (phoneNumber) {
+          // getVerifyUser();
+
           setState(() {
-            countrycode =
-                phoneNumber!.countryCode.toString().replaceFirst('+', '');
+            countrycode = phoneNumber!.countryCode.toString().replaceFirst('+', '');
             mobile = phoneNumber.number;
           });
-
-          print("phone number2222****${phoneNumber!.countryCode}");
+          print("phone numbersdfgsdv2222****${phoneNumber!.countryCode}");
+          print("phone numbersdfgsdv2222****${phoneNumber!.number}");
         },
         onCountryChanged: (country) {
           setState(() {
             countrycode = country.dialCode;
           });
-          print(
-              "phone number111*****${country.name}****${country.code}*****${country.dialCode}");
+          print("phone number111*****${country.name}****${country.code}*****${country.dialCode}");
         },
         onChanged: (phone) {
           /* setState(() {
             mobile = phone.number;
           });*/
-          print(
-              "phone number*****${phone.completeNumber}****${phone.countryCode}*****${phone.number}****");
+          print("phone number*****${phone.completeNumber}****${phone.countryCode}*****${phone.number}****");
         },
         showDropdownIcon: false,
         invalidNumberMessage: getTranslated(context, VALID_MOB)!,
@@ -402,12 +485,10 @@ class _SendOtpState extends State<SendOtp> with TickerProviderStateMixin {
           vertical: 2,
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(color: Theme.of(context).colorScheme.lightWhite),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.lightWhite),
         ),
         enabledBorder: UnderlineInputBorder(
-          borderSide:
-              BorderSide(color: Theme.of(context).colorScheme.lightWhite),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.lightWhite),
         ),
       ),
     );
@@ -415,12 +496,11 @@ class _SendOtpState extends State<SendOtp> with TickerProviderStateMixin {
 
   verifyBtn() {
     return AppBtn(
-      title: widget.title == SEND_OTP_TITLE
-          ? getTranslated(context, SEND_OTP)!
-          : getTranslated(context, GET_PASSWORD)!,
+      title: widget.title == SEND_OTP_TITLE ? getTranslated(context, SEND_OTP)! : getTranslated(context, GET_PASSWORD)!,
       btnAnim: buttonSqueezeanimation,
       btnCntrl: buttonController,
       onBtnSelected: () async {
+        print("Sdvcvfg");
         validateAndSubmit();
       },
     );

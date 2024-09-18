@@ -26,25 +26,12 @@ class Profile extends StatefulWidget {
 String? lat, long;
 
 class StateProfile extends State<Profile> with TickerProviderStateMixin {
-  String name = "",
-      email = "",
-      mobile = "",
-      address = "",
-      curPass = "",
-      newPass = "",
-      confPass = "",
-      loaction = "";
+  String name = "", email = "", mobile = "", address = "", curPass = "", newPass = "", confPass = "", loaction = "";
 
   bool _isLoading = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  TextEditingController? nameC,
-      emailC,
-      mobileC,
-      addressC,
-      curPassC,
-      newPassC,
-      confPassC;
+  TextEditingController? nameC, emailC, mobileC, addressC, curPassC, newPassC, confPassC;
   bool isSelected = false, isArea = true;
   bool _isNetworkAvail = true;
   bool _showCurPassword = false, _showPassword = false, _showCmPassword = false;
@@ -255,9 +242,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
       data[ADDRESS] = address;
     }
 
-    http.Response response = await http
-        .post(getUpdateUserApi, body: data, headers: headers)
-        .timeout(const Duration(seconds: timeOut));
+    http.Response response = await http.post(getUpdateUserApi, body: data, headers: headers).timeout(const Duration(seconds: timeOut));
 
     if (response.statusCode == 200) {
       var getdata = json.decode(response.body);
@@ -331,8 +316,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                     ? Text(
                         name,
                         style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                              color:
-                                  Theme.of(context).colorScheme.lightfontColor,
+                              color: Theme.of(context).colorScheme.lightfontColor,
                               fontWeight: FontWeight.bold,
                             ),
                       )
@@ -375,37 +359,20 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                           ),
                           child: Text(
                             getTranslated(context, ADD_NAME_LBL)!,
-                            style: Theme.of(this.context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .fontColor),
+                            style: Theme.of(this.context).textTheme.titleMedium!.copyWith(color: Theme.of(context).colorScheme.fontColor),
                           ),
                         ),
                         const Divider(),
                         Form(
                           key: _formKey,
                           child: Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                            padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
                             child: TextFormField(
-                              cursorColor:
-                                  Theme.of(context).colorScheme.fontColor,
+                              cursorColor: Theme.of(context).colorScheme.fontColor,
                               keyboardType: TextInputType.text,
-                              style: Theme.of(this.context)
-                                  .textTheme
-                                  .titleMedium!
-                                  .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .lightfontColor,
-                                      fontWeight: FontWeight.normal),
-                              validator: (value) =>
-                                  validateUserName(value, context),
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              style: Theme.of(this.context).textTheme.titleMedium!.copyWith(color: Theme.of(context).colorScheme.lightfontColor, fontWeight: FontWeight.normal),
+                              validator: (value) => validateUserName(value, context),
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               controller: nameC,
                               onChanged: (v) => setState(
                                 () {
@@ -422,8 +389,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                           child: Text(
                             getTranslated(context, CANCEL)!,
                             style: TextStyle(
-                              color:
-                                  Theme.of(context).colorScheme.lightfontColor,
+                              color: Theme.of(context).colorScheme.lightfontColor,
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                             ),
@@ -492,16 +458,13 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
               children: [
                 Text(
                   getTranslated(context, MOBILEHINT_LBL)!,
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                      color: Theme.of(context).colorScheme.lightfontColor2,
-                      fontWeight: FontWeight.normal),
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).colorScheme.lightfontColor2, fontWeight: FontWeight.normal),
                 ),
                 mobile != "" && mobile != ""
                     ? Text(
                         mobile,
                         style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                              color:
-                                  Theme.of(context).colorScheme.lightfontColor,
+                              color: Theme.of(context).colorScheme.lightfontColor,
                               fontWeight: FontWeight.bold,
                             ),
                       )
@@ -555,30 +518,25 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                           itemBuilder: (context, index) {
                             // Build your list item widgets here
                             return Padding(
-                              padding: EdgeInsetsDirectional.only(
-                                  start: index != 0 ? 10 : 0),
+                              padding: EdgeInsetsDirectional.only(start: index != 0 ? 10 : 0),
                               child: InkWell(
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
                                   child: FadeInImage(
-                                      fadeInDuration:
-                                          const Duration(milliseconds: 150),
-                                      image:
-                                          NetworkImage(licenseGetImages[index]),
+                                      fadeInDuration: const Duration(milliseconds: 150),
+                                      image: NetworkImage(licenseGetImages[index]),
                                       height: 100.0,
                                       fit: BoxFit.fill,
                                       width: deviceWidth! / 2.7,
                                       placeholder: placeHolder(90),
-                                      imageErrorBuilder:
-                                          ((context, error, stackTrace) {
+                                      imageErrorBuilder: ((context, error, stackTrace) {
                                         return Image.asset(
                                           'assets/images/placeholder.png',
                                           height: 90,
                                           width: 90,
                                         );
                                       }),
-                                      placeholderErrorBuilder:
-                                          ((context, error, stackTrace) {
+                                      placeholderErrorBuilder: ((context, error, stackTrace) {
                                         return Image.asset(
                                           'assets/images/placeholder.png',
                                           height: 90,
@@ -641,39 +599,25 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                   height: 110,
                   width: deviceWidth! / 2.7,
                   child: DashedRect(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .fontColor
-                          .withOpacity(0.6),
+                      color: Theme.of(context).colorScheme.fontColor.withOpacity(0.6),
                       child: Padding(
                         padding: EdgeInsets.only(top: 30),
                         child: Column(children: [
                           Icon(
                             Icons.image,
                             size: 15,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .fontColor
-                                .withOpacity(0.7),
+                            color: Theme.of(context).colorScheme.fontColor.withOpacity(0.7),
                           ),
                           SizedBox(
                             height: 10,
                           ),
                           Expanded(
                             child: Padding(
-                              padding:
-                                  const EdgeInsetsDirectional.only(start: 5),
+                              padding: const EdgeInsetsDirectional.only(start: 5),
                               child: Text(
                                 getTranslated(context, 'FRONT_SIDE_IMAGE_LBL')!,
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .fontColor
-                                            .withOpacity(0.5)),
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).colorScheme.fontColor.withOpacity(0.5)),
                               ),
                             ),
                           )
@@ -688,40 +632,25 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                       height: 110,
                       width: deviceWidth! / 2.7,
                       child: DashedRect(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .fontColor
-                            .withOpacity(0.6),
+                        color: Theme.of(context).colorScheme.fontColor.withOpacity(0.6),
                         child: Padding(
                           padding: EdgeInsets.only(top: 30),
                           child: Column(children: [
                             Icon(
                               Icons.image,
                               size: 15,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .fontColor
-                                  .withOpacity(0.7),
+                              color: Theme.of(context).colorScheme.fontColor.withOpacity(0.7),
                             ),
                             SizedBox(
                               height: 10,
                             ),
                             Expanded(
                               child: Padding(
-                                padding:
-                                    const EdgeInsetsDirectional.only(start: 5),
+                                padding: const EdgeInsetsDirectional.only(start: 5),
                                 child: Text(
-                                  getTranslated(
-                                      context, 'BACK_SIDE_IMAGE_LBL')!,
+                                  getTranslated(context, 'BACK_SIDE_IMAGE_LBL')!,
                                   textAlign: TextAlign.center,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .fontColor
-                                              .withOpacity(0.5)),
+                                  style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).colorScheme.fontColor.withOpacity(0.5)),
                                 ),
                               ),
                             )
@@ -745,8 +674,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                   itemCount: licenseImages.length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: EdgeInsetsDirectional.only(
-                          start: index != 0 ? 10 : 0),
+                      padding: EdgeInsetsDirectional.only(start: index != 0 ? 10 : 0),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.file(
@@ -963,11 +891,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                       ),
                       child: Text(
                         getTranslated(context, CHANGE_PASS_LBL)!,
-                        style: Theme.of(this.context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(
-                                color: Theme.of(context).colorScheme.fontColor),
+                        style: Theme.of(this.context).textTheme.titleMedium!.copyWith(color: Theme.of(context).colorScheme.fontColor),
                       ),
                     ),
                     const Divider(),
@@ -976,12 +900,9 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                       child: Column(
                         children: <Widget>[
                           Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                            padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
                             child: TextFormField(
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.fontColor),
+                              style: TextStyle(color: Theme.of(context).colorScheme.fontColor),
                               keyboardType: TextInputType.text,
                               validator: (value) {
                                 if (value.toString().isEmpty) {
@@ -989,26 +910,15 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                                 }
                                 return null;
                               },
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               decoration: InputDecoration(
                                 hintText: getTranslated(context, CUR_PASS_LBL)!,
-                                hintStyle: Theme.of(this.context)
-                                    .textTheme
-                                    .titleMedium!
-                                    .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .lightfontColor,
-                                        fontWeight: FontWeight.normal),
+                                hintStyle:
+                                    Theme.of(this.context).textTheme.titleMedium!.copyWith(color: Theme.of(context).colorScheme.lightfontColor, fontWeight: FontWeight.normal),
                                 suffixIcon: IconButton(
-                                  icon: Icon(_showCurPassword
-                                      ? Icons.visibility
-                                      : Icons.visibility_off),
+                                  icon: Icon(_showCurPassword ? Icons.visibility : Icons.visibility_off),
                                   iconSize: 20,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .lightfontColor,
+                                  color: Theme.of(context).colorScheme.lightfontColor,
                                   onPressed: () {
                                     setStater(
                                       () {
@@ -1028,35 +938,20 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                             ),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                            padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
                             child: TextFormField(
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.fontColor),
+                              style: TextStyle(color: Theme.of(context).colorScheme.fontColor),
                               keyboardType: TextInputType.text,
-                              validator: (value) =>
-                                  validatePass(value, context),
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) => validatePass(value, context),
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               decoration: InputDecoration(
                                 hintText: getTranslated(context, NEW_PASS_LBL)!,
-                                hintStyle: Theme.of(this.context)
-                                    .textTheme
-                                    .titleMedium!
-                                    .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .lightfontColor,
-                                        fontWeight: FontWeight.normal),
+                                hintStyle:
+                                    Theme.of(this.context).textTheme.titleMedium!.copyWith(color: Theme.of(context).colorScheme.lightfontColor, fontWeight: FontWeight.normal),
                                 suffixIcon: IconButton(
-                                  icon: Icon(_showPassword
-                                      ? Icons.visibility
-                                      : Icons.visibility_off),
+                                  icon: Icon(_showPassword ? Icons.visibility : Icons.visibility_off),
                                   iconSize: 20,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .lightfontColor,
+                                  color: Theme.of(context).colorScheme.lightfontColor,
                                   onPressed: () {
                                     setStater(
                                       () {
@@ -1076,49 +971,33 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                             ),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                            padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
                             child: TextFormField(
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.fontColor),
+                              style: TextStyle(color: Theme.of(context).colorScheme.fontColor),
                               keyboardType: TextInputType.text,
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return getTranslated(
-                                      context, CON_PASS_REQUIRED_MSG)!;
+                                  return getTranslated(context, CON_PASS_REQUIRED_MSG)!;
                                 }
                                 if (value != newPass) {
-                                  return getTranslated(
-                                      context, CON_PASS_NOT_MATCH_MSG)!;
+                                  return getTranslated(context, CON_PASS_NOT_MATCH_MSG)!;
                                 } else {
                                   return null;
                                 }
                               },
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               decoration: InputDecoration(
-                                hintText: getTranslated(
-                                    context, CONFIRMPASSHINT_LBL)!,
-                                hintStyle: Theme.of(this.context)
-                                    .textTheme
-                                    .titleMedium!
-                                    .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .lightfontColor,
+                                hintText: getTranslated(context, CONFIRMPASSHINT_LBL)!,
+                                hintStyle: Theme.of(this.context).textTheme.titleMedium!.copyWith(
+                                      color: Theme.of(context).colorScheme.lightfontColor,
                                       fontWeight: FontWeight.normal,
                                     ),
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _showCmPassword
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
+                                    _showCmPassword ? Icons.visibility : Icons.visibility_off,
                                   ),
                                   iconSize: 20,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .lightfontColor,
+                                  color: Theme.of(context).colorScheme.lightfontColor,
                                   onPressed: () {
                                     setStater(
                                       () {
@@ -1147,10 +1026,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                 TextButton(
                   child: Text(
                     getTranslated(context, CANCEL)!,
-                    style: Theme.of(this.context)
-                        .textTheme
-                        .titleSmall!
-                        .copyWith(
+                    style: Theme.of(this.context).textTheme.titleSmall!.copyWith(
                           color: Theme.of(context).colorScheme.lightfontColor,
                           fontWeight: FontWeight.bold,
                         ),
@@ -1162,11 +1038,10 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                 TextButton(
                   child: Text(
                     getTranslated(context, SAVE_LBL)!,
-                    style:
-                        Theme.of(this.context).textTheme.titleSmall!.copyWith(
-                              color: Theme.of(context).colorScheme.fontColor,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    style: Theme.of(this.context).textTheme.titleSmall!.copyWith(
+                          color: Theme.of(context).colorScheme.fontColor,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   onPressed: () {
                     final form = _formKey.currentState!;
@@ -1280,11 +1155,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
         context,
       ),
       body: Stack(
-        children: <Widget>[
-          _showContent1(),
-          showCircularProgress(
-              _isLoading, Theme.of(context).colorScheme.primarytheme)
-        ],
+        children: <Widget>[_showContent1(), showCircularProgress(_isLoading, Theme.of(context).colorScheme.primarytheme)],
       ),
     );
   }

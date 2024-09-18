@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
@@ -17,12 +18,9 @@ import 'Set_Password.dart';
 
 class VerifyOtp extends StatefulWidget {
   final String? mobileNumber, countryCode, title;
+  final String? receivedOtp;
 
-  const VerifyOtp(
-      {Key? key,
-      required String this.mobileNumber,
-      this.countryCode,
-      this.title})
+  const VerifyOtp({Key? key, required String this.mobileNumber, this.receivedOtp, this.countryCode, this.title})
       : assert(mobileNumber != ""),
         super(key: key);
 
@@ -57,8 +55,7 @@ class _MobileOTPState extends State<VerifyOtp> with TickerProviderStateMixin {
         _isClickable = true;
       },
     );
-    buttonController = AnimationController(
-        duration: const Duration(milliseconds: 2000), vsync: this);
+    buttonController = AnimationController(duration: const Duration(milliseconds: 2000), vsync: this);
 
     buttonSqueezeanimation = Tween(
       begin: deviceWidth! * 0.7,
@@ -220,75 +217,88 @@ class _MobileOTPState extends State<VerifyOtp> with TickerProviderStateMixin {
 
     if (code.length == 6) {
       _playAnimation();
-      AuthCredential authCredential = PhoneAuthProvider.credential(
-          verificationId: _verificationId, smsCode: code);
-      if (isFirebaseAuth) {
-        _firebaseAuth.signInWithCredential(authCredential).then(
-          (UserCredential value) async {
-            if (value.user != "") {
-              await buttonController!.reverse();
-              setSnackbar(getTranslated(context, OTPMSG)!);
-              setPrefrence(MOBILE, mobile!);
-              setPrefrence(COUNTRY_CODE, countrycode!);
-              if (widget.title == SEND_OTP_TITLE) {
-              } else if (widget.title == FORGOT_PASS_TITLE) {
-                Future.delayed(const Duration(seconds: 2)).then((_) {
-                  Navigator.pushReplacement(
-                    context,
-                    CupertinoPageRoute(
-                      builder: (context) => SetPass(
-                        mobileNumber: mobile!,
-                      ),
-                    ),
-                  );
-                });
-              }
-            } else {
-              setSnackbar(
-                getTranslated(context, OTPERROR)!,
-              );
-              await buttonController!.reverse();
-            }
-          },
-        ).catchError(
-          (error) async {
-            setSnackbar(error.toString());
-
-            await buttonController!.reverse();
-          },
-        );
-      } else {
-        Response response = await post(verifyOTP,
-            body: {
-              "mobile": mobile,
-              "otp": otp,
-            },
-            headers: headers);
-        var getdata = json.decode(response.body);
-        if (getdata['error']!) {
-          setSnackbar(getdata['message'].toString());
-          await buttonController!.reverse();
-        } else {
-          await buttonController!.reverse();
-          setSnackbar(getTranslated(context, OTPMSG)!);
-          setPrefrence(MOBILE, mobile!);
-          setPrefrence(COUNTRY_CODE, countrycode!);
-          Future.delayed(const Duration(seconds: 2)).then((_) {
-            Navigator.pushReplacement(
-              context,
-              CupertinoPageRoute(
-                builder: (context) => SetPass(
-                  mobileNumber: mobile!,
-                ),
+      if (widget.receivedOtp == code) {
+        Future.delayed(const Duration(seconds: 2)).then((_) {
+          Navigator.pushReplacement(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => SetPass(
+                mobileNumber: mobile!,
               ),
-            );
-          });
-        }
+            ),
+          );
+        });
+      } else {
+        Fluttertoast.showToast(msg: "Invalid OTP");
       }
+      // AuthCredential authCredential = PhoneAuthProvider.credential(verificationId: _verificationId, smsCode: code);
+      // if (isFirebaseAuth) {
+      //   _firebaseAuth.signInWithCredential(authCredential).then(
+      //     (UserCredential value) async {
+      //       if (value.user != "") {
+      //         await buttonController!.reverse();
+      //         setSnackbar(getTranslated(context, OTPMSG)!);
+      //         setPrefrence(MOBILE, mobile!);
+      //         setPrefrence(COUNTRY_CODE, countrycode!);
+      //         if (widget.title == SEND_OTP_TITLE) {
+      //         } else if (widget.title == FORGOT_PASS_TITLE) {
+      //           Future.delayed(const Duration(seconds: 2)).then((_) {
+      //             Navigator.pushReplacement(
+      //               context,
+      //               CupertinoPageRoute(
+      //                 builder: (context) => SetPass(
+      //                   mobileNumber: mobile!,
+      //                 ),
+      //               ),
+      //             );
+      //           });
+      //         }
+      //       } else {
+      //         setSnackbar(
+      //           getTranslated(context, OTPERROR)!,
+      //         );
+      //         await buttonController!.reverse();
+      //       }
+      //     },
+      //   ).catchError(
+      //     (error) async {
+      //       setSnackbar(error.toString());
+      //
+      //       await buttonController!.reverse();
+      //     },
+      //   );
+      // } else {
+      //   Response response = await post(verifyOTP,
+      //       body: {
+      //         "mobile": mobile,
+      //         "otp": otp,
+      //       },
+      //       headers: headers);
+      //   var getdata = json.decode(response.body);
+      //   if (getdata['error']!) {
+      //     setSnackbar(getdata['message'].toString());
+      //     await buttonController!.reverse();
+      //   } else {
+      //     await buttonController!.reverse();
+      //     setSnackbar(getTranslated(context, OTPMSG)!);
+      //     setPrefrence(MOBILE, mobile!);
+      //     setPrefrence(COUNTRY_CODE, countrycode!);
+      //     Future.delayed(const Duration(seconds: 2)).then((_) {
+      //       Navigator.pushReplacement(
+      //         context,
+      //         CupertinoPageRoute(
+      //           builder: (context) => SetPass(
+      //             mobileNumber: mobile!,
+      //           ),
+      //         ),
+      //       );
+      //     });
+      //   }
+      // }
     } else {
-      setSnackbar(
-        getTranslated(context, ENTEROTP)!,
-      );
+      // setSnackbar(
+      //   getTranslated(context, ENTEROTP)!,
+      // );
     }
   }
 
@@ -383,10 +393,8 @@ class _MobileOTPState extends State<VerifyOtp> with TickerProviderStateMixin {
       child: Center(
         child: PinFieldAutoFill(
           decoration: UnderlineDecoration(
-            textStyle: TextStyle(
-                fontSize: 20, color: Theme.of(context).colorScheme.fontColor),
-            colorBuilder:
-                FixedColorBuilder(Theme.of(context).colorScheme.lightWhite),
+            textStyle: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.fontColor),
+            colorBuilder: FixedColorBuilder(Theme.of(context).colorScheme.lightWhite),
           ),
           currentCode: otp,
           codeLength: 6,

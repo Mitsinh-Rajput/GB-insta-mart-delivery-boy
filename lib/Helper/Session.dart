@@ -224,9 +224,7 @@ Future<void> clearUserSession() async {
   prefs.setString(APP_THEME, theme!);
 }
 
-Future<void> saveUserDetail(
-    String userId, String name, String email, String mobile,
-    [String? token]) async {
+Future<void> saveUserDetail(String userId, String name, String email, String mobile, [String? token]) async {
   final waitList = <Future<void>>[];
   SharedPreferences prefs = await SharedPreferences.getInstance();
   waitList.add(prefs.setString(ID, userId));
@@ -289,8 +287,7 @@ String? validateAltMob(String value, BuildContext context) {
 
 Widget getProgress(BuildContext context) {
   return Center(
-    child: CircularProgressIndicator(
-        color: Theme.of(context).colorScheme.primarytheme),
+    child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primarytheme),
   );
 }
 
@@ -303,12 +300,8 @@ Widget getNoItem(BuildContext context) {
 }
 
 extension StringExtension on String {
-  String toCapitalized() =>
-      length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
-  String toTitleCase() => replaceAll(RegExp(' +'), ' ')
-      .split(' ')
-      .map((str) => str.toCapitalized())
-      .join(' ');
+  String toCapitalized() => length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
+  String toTitleCase() => replaceAll(RegExp(' +'), ' ').split(' ').map((str) => str.toCapitalized()).join(' ');
 }
 
 String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
@@ -401,4 +394,5 @@ String? getPriceFormat(
 
 Map<String, String> get headers => {
       "Authorization": 'Bearer ${getToken()}',
+      "Accept": "application/json",
     };

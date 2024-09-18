@@ -3,6 +3,8 @@ import 'package:deliveryboy/Helper/Constant.dart';
 final Uri getUserLoginApi = Uri.parse('${baseUrl}login');
 final Uri registerDeliveryBoy = Uri.parse('${baseUrl}register');
 final Uri getVerifyUserApi = Uri.parse('${baseUrl}verify_user');
+final Uri sendOtpAndVerifyApi = Uri.parse('https://www.appdid.com/api/v1/generate-otp');
+
 final Uri resendOtpApi = Uri.parse('${baseUrl}resend_otp');
 final Uri getFundTransferApi = Uri.parse('${baseUrl}get_fund_transfers');
 final Uri getNotificationApi = Uri.parse('${baseUrl}get_notifications');
@@ -18,8 +20,7 @@ final Uri updateOrderItemApi = Uri.parse('${baseUrl}update_order_item_status');
 
 final Uri sendWithReqApi = Uri.parse('${baseUrl}send_withdrawal_request');
 final Uri getWithReqApi = Uri.parse('${baseUrl}get_withdrawal_request');
-final Uri getCashCollection =
-    Uri.parse('${baseUrl}get_delivery_boy_cash_collection');
+final Uri getCashCollection = Uri.parse('${baseUrl}get_delivery_boy_cash_collection');
 final Uri setDeleteAccApi = Uri.parse('${baseUrl}delete_delivery_boy');
 
 //=== for syatem theme ==

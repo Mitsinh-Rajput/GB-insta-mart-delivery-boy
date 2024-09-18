@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:deliveryboy/Helper/translate.dart';
 import 'package:deliveryboy/Screens/register_deliveryboy.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart';
 
 import '../Helper/AppBtn.dart';
@@ -28,10 +28,8 @@ class Login extends StatefulWidget {
 
 class _LoginPageState extends State<Login> with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final mobileController =
-      TextEditingController(text: isDemoApp ? "1234567890" : "");
-  final passwordController =
-      TextEditingController(text: isDemoApp ? "12345678" : "");
+  final mobileController = TextEditingController(text: "");
+  final passwordController = TextEditingController(text: "");
   String? countryName;
   FocusNode? passFocus, monoFocus = FocusNode();
 
@@ -192,6 +190,7 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
         ),
       );
       if (response.statusCode == 200) {
+        log(jsonEncode(response.body));
         var getdata = json.decode(response.body);
 
         bool error = getdata["error"];
@@ -424,9 +423,7 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
         keyboardType: TextInputType.text,
         obscureText: !showPassword,
         focusNode: passFocus,
-        style: TextStyle(
-            color: Theme.of(context).colorScheme.fontColor,
-            fontWeight: FontWeight.normal),
+        style: TextStyle(color: Theme.of(context).colorScheme.fontColor, fontWeight: FontWeight.normal),
         controller: passwordController,
         validator: (value) => validatePass(value, context),
         onSaved: (String? value) {
