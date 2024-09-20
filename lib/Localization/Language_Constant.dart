@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../main.dart';
 
 const String LAGUAGE_CODE = 'languageCode';
@@ -38,18 +39,6 @@ Locale _locale(String languageCode) {
       return const Locale(ENGLISH, 'US');
     case HINDI:
       return const Locale(HINDI, "IN");
-    case CHINESE:
-      return const Locale(CHINESE, "CN");
-    case SPANISH:
-      return const Locale(SPANISH, "ES");
-    case ARABIC:
-      return const Locale(ARABIC, "DZ");
-    case RUSSIAN:
-      return const Locale(RUSSIAN, "RU");
-    case JAPANESE:
-      return const Locale(JAPANESE, "JP");
-    case DEUTSCH:
-      return const Locale(DEUTSCH, "DE");
     default:
       return const Locale(ENGLISH, 'US');
   }

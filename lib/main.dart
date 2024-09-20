@@ -119,16 +119,12 @@ class _MyAppState extends State<MyApp> {
             title: appName,
             theme: ThemeData(
               useMaterial3: false,
-              colorScheme:
-                  ColorScheme.fromSwatch(primarySwatch: colors.primary_app)
-                      .copyWith(brightness: Brightness.light),
+              colorScheme: ColorScheme.fromSwatch(primarySwatch: colors.primary_app).copyWith(brightness: Brightness.light),
               visualDensity: VisualDensity.adaptivePlatformDensity,
               canvasColor: Theme.of(context).colorScheme.lightWhite,
               cardColor: Theme.of(context).colorScheme.white,
               dialogBackgroundColor: Theme.of(context).colorScheme.white,
-              iconTheme: Theme.of(context)
-                  .iconTheme
-                  .copyWith(color: Theme.of(context).colorScheme.primary),
+              iconTheme: Theme.of(context).iconTheme.copyWith(color: Theme.of(context).colorScheme.primary),
               primarySwatch: colors.primary_app,
               primaryColor: Theme.of(context).colorScheme.lightWhite,
               fontFamily: 'opensans',
@@ -154,18 +150,17 @@ class _MyAppState extends State<MyApp> {
             ],
             supportedLocales: const [
               Locale("en", "US"),
-              Locale("zh", "CN"),
-              Locale("es", "ES"),
+              // Locale("zh", "CN"),
+              // Locale("es", "ES"),
               Locale("hi", "IN"),
-              Locale("ar", "DZ"),
-              Locale("ru", "RU"),
-              Locale("ja", "JP"),
-              Locale("de", "DE")
+              // Locale("ar", "DZ"),
+              // Locale("ru", "RU"),
+              // Locale("ja", "JP"),
+              // Locale("de", "DE")
             ],
             localeResolutionCallback: (locale, supportedLocales) {
               for (Locale supportedLocale in supportedLocales) {
-                if (supportedLocale.languageCode == locale!.languageCode &&
-                    supportedLocale.countryCode == locale.countryCode) {
+                if (supportedLocale.languageCode == locale!.languageCode && supportedLocale.countryCode == locale.countryCode) {
                   return supportedLocale;
                 }
               }
@@ -184,30 +179,22 @@ class _MyAppState extends State<MyApp> {
               textSelectionTheme: TextSelectionThemeData(
                   cursorColor: Theme.of(context).colorScheme.lightfontColor,
                   selectionColor: Theme.of(context).colorScheme.lightfontColor,
-                  selectionHandleColor:
-                      Theme.of(context).colorScheme.lightfontColor),
+                  selectionHandleColor: Theme.of(context).colorScheme.lightfontColor),
               fontFamily: 'ubuntu',
               brightness: Brightness.dark,
               hintColor: Theme.of(context).colorScheme.white,
-              iconTheme: Theme.of(context)
-                  .iconTheme
-                  .copyWith(color: Theme.of(context).colorScheme.secondary),
+              iconTheme: Theme.of(context).iconTheme.copyWith(color: Theme.of(context).colorScheme.secondary),
               textTheme: TextTheme(
                       titleLarge: TextStyle(
                         color: Theme.of(context).colorScheme.fontColor,
                         fontWeight: FontWeight.w600,
                       ),
-                      titleMedium: TextStyle(
-                          color: Theme.of(context).colorScheme.fontColor,
-                          fontWeight: FontWeight.bold))
+                      titleMedium: TextStyle(color: Theme.of(context).colorScheme.fontColor, fontWeight: FontWeight.bold))
                   .apply(bodyColor: Theme.of(context).colorScheme.fontColor),
-              colorScheme: ColorScheme.fromSwatch(
-                      primarySwatch: colors.primary_app)
-                  .copyWith(brightness: Brightness.dark)
-                  .copyWith(secondary: Theme.of(context).colorScheme.darkColor),
+              colorScheme:
+                  ColorScheme.fromSwatch(primarySwatch: colors.primary_app).copyWith(brightness: Brightness.dark).copyWith(secondary: Theme.of(context).colorScheme.darkColor),
               checkboxTheme: CheckboxThemeData(
-                fillColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
+                fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
                   if (states.contains(MaterialState.disabled)) {
                     return null;
                   }
@@ -218,8 +205,7 @@ class _MyAppState extends State<MyApp> {
                 }),
               ),
               radioTheme: RadioThemeData(
-                fillColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
+                fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
                   if (states.contains(MaterialState.disabled)) {
                     return null;
                   }
@@ -230,8 +216,7 @@ class _MyAppState extends State<MyApp> {
                 }),
               ),
               switchTheme: SwitchThemeData(
-                thumbColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
+                thumbColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
                   if (states.contains(MaterialState.disabled)) {
                     return null;
                   }
@@ -240,8 +225,7 @@ class _MyAppState extends State<MyApp> {
                   }
                   return null;
                 }),
-                trackColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
+                trackColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
                   if (states.contains(MaterialState.disabled)) {
                     return null;
                   }
@@ -261,8 +245,6 @@ class _MyAppState extends State<MyApp> {
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
+    return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
   }
 }
