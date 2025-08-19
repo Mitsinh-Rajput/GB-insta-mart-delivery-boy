@@ -33,7 +33,9 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 34
+    namespace = "in.gbinstamart.deliveryboy"
+
+    compileSdkVersion 35
 
     lintOptions {
         disable 'InvalidPackage'
@@ -55,7 +57,7 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "in.gbinstamart.deliveryboy"
         minSdkVersion 21
-        targetSdkVersion 34
+        targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
